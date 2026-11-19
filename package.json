@@ -1,0 +1,51 @@
+{
+  "name": "taskflow-desktop",
+  "version": "1.0.0",
+  "description": "任务看板 TaskFlow — 简洁、本地优先的三栏任务看板",
+  "main": "src/main.js",
+  "author": "TaskFlow",
+  "license": "MIT",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win portable",
+    "dist:dir": "electron-builder --win dir"
+  },
+  "build": {
+    "appId": "com.taskflow.desktop",
+    "productName": "TaskFlow",
+    "copyright": "Copyright © 2026 TaskFlow",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "src/**/*",
+      "build/icon.ico",
+      "package.json"
+    ],
+    "asar": true,
+    "npmRebuild": false,
+    "win": {
+      "target": [
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "executableName": "任务看板",
+      "artifactName": "TaskFlow-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "TaskFlow-${version}.${ext}"
+    }
+  },
+  "devDependencies": {
+    "electron": "^30.5.1",
+    "electron-builder": "^26.18.0"
+  }
+}

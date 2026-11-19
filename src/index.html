@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>任务看板 · TaskFlow</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <svg class="svg-sprite" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9.7 9.3a2.4 2.4 0 0 1 4.7.5c0 1.7-2.4 1.8-2.4 3.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><circle cx="12" cy="16.8" r=".95" fill="currentColor"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5" fill="currentColor"/><circle cx="12" cy="12" r="1.5" fill="currentColor"/><circle cx="19" cy="12" r="1.5" fill="currentColor"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m8 10 4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5.5 12.5 4 4 9-9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="currentColor" opacity=".14"/><path d="m7.8 12.2 2.8 2.8 5.7-5.8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-inbox" viewBox="0 0 32 32"><path d="M5 17.5 8.2 8h15.6l3.2 9.5V25a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7.5Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M5 18h6l1.6 3h6.8l1.6-3h6" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+    <symbol id="i-play" viewBox="0 0 32 32"><circle cx="16" cy="16" r="11" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m13.5 11.5 8 4.5-8 4.5v-9Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
+    <symbol id="i-archive" viewBox="0 0 32 32"><path d="M6 9h20v4H6V9Zm2 4v12h16V13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M13 17h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="m14.5 6.5 3 3M5 19l1-4L16.8 4.2a1.5 1.5 0 0 1 2.1 0l.9.9a1.5 1.5 0 0 1 0 2.1L9 18l-4 1Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+    <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h13M13 7l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19 12H6M11 7l-5 5 5 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4.8h6V7m-8.8 0 .7 12h10.2l.7-12M10 10.5v5M14 10.5v5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-keyboard" viewBox="0 0 24 24"><rect x="3.5" y="6" width="17" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M7 10h.01M11 10h.01M15 10h.01M17 10h.01M7 14h10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3.5 7.5c0-1.1.9-2 2-2h4l2 2h7c1.1 0 2 .9 2 2v8c0 1.1-.9 2-2 2h-13c-1.1 0-2-.9-2-2v-10Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  </svg>
+
+  <div class="app">
+    <header class="topbar" id="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40">
+            <rect width="40" height="40" rx="11" fill="#22313f"/>
+            <rect x="8.8" y="10" width="5.8" height="20" rx="2.9" fill="#e3a94c"/>
+            <rect x="17.1" y="10" width="5.8" height="14" rx="2.9" fill="#709eca"/>
+            <rect x="25.4" y="10" width="5.8" height="8.5" rx="2.9" fill="#75ae8b"/>
+          </svg>
+        </span>
+        <div class="brand-copy">
+          <div class="brand-line">
+            <h1>任务看板</h1>
+            <span class="brand-en">TASKFLOW</span>
+          </div>
+          <p id="dateLine">正在准备你的看板</p>
+        </div>
+      </div>
+
+      <div class="topbar-actions">
+        <div class="progress-summary" aria-label="全部任务完成进度">
+          <div class="progress-labels">
+            <span>总进度</span>
+            <strong id="progressText">0 / 0</strong>
+          </div>
+          <div class="progress-track" id="progressTrack" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </div>
+        <div class="save-state" id="saveState" title="任务只保存在这台电脑上">
+          <span class="save-dot"></span>
+          <span id="saveText">本地保存</span>
+        </div>
+        <button class="icon-button help-button" id="helpButton" type="button" aria-label="使用说明与快捷键" title="使用说明（?）">
+          <svg><use href="#i-help"></use></svg>
+        </button>
+      </div>
+    </header>
+
+    <section class="command-bar">
+      <form class="quick-add" id="addForm" autocomplete="off">
+        <span class="quick-add-icon" aria-hidden="true"><svg><use href="#i-plus"></use></svg></span>
+        <input id="addInput" type="text" maxlength="160" placeholder="快速添加任务，按 Enter 加入「待开始」" aria-label="添加新任务">
+        <span class="key-hint" aria-hidden="true"><kbd>↵</kbd></span>
+        <button class="add-button" type="submit">添加任务</button>
+      </form>
+      <label class="search-box" for="searchInput">
+        <svg class="search-icon" aria-hidden="true"><use href="#i-search"></use></svg>
+        <input id="searchInput" type="text" autocomplete="off" placeholder="搜索全部任务" aria-label="搜索全部任务">
+        <button class="search-clear" id="searchClear" type="button" aria-label="清空搜索" title="清空搜索" hidden>
+          <svg><use href="#i-close"></use></svg>
+        </button>
+        <span class="search-shortcut" aria-hidden="true">Ctrl F</span>
+      </label>
+    </section>
+
+    <main class="board" id="board" aria-label="任务看板">
+      <section class="column column-todo" data-status="todo" aria-labelledby="headingTodo">
+        <header class="column-header">
+          <div class="column-heading">
+            <span class="status-dot" aria-hidden="true"></span>
+            <h2 id="headingTodo">待开始</h2>
+            <span class="column-count" id="countTodo">0</span>
+          </div>
+          <span class="column-caption">收件箱</span>
+        </header>
+        <div class="column-scroll" data-status="todo">
+          <div class="task-list" id="listTodo" data-status="todo"></div>
+        </div>
+      </section>
+
+      <section class="column column-doing" data-status="doing" aria-labelledby="headingDoing">
+        <header class="column-header">
+          <div class="column-heading">
+            <span class="status-dot" aria-hidden="true"></span>
+            <h2 id="headingDoing">进行中</h2>
+            <span class="column-count" id="countDoing">0</span>
+          </div>
+          <span class="column-caption">专注当下</span>
+        </header>
+        <div class="column-scroll" data-status="doing">
+          <div class="task-list" id="listDoing" data-status="doing"></div>
+        </div>
+      </section>
+
+      <section class="column column-done" data-status="done" aria-labelledby="headingDone">
+        <header class="column-header">
+          <div class="column-heading">
+            <span class="status-dot" aria-hidden="true"></span>
+            <h2 id="headingDone">已完成</h2>
+            <span class="column-count" id="countDone">0</span>
+          </div>
+          <button class="text-button" id="toggleAllGroups" type="button" hidden>全部展开</button>
+        </header>
+        <div class="column-scroll" data-status="done">
+          <div class="done-groups" id="doneGroups"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div class="drop-placeholder" id="dropPlaceholder" hidden><span></span></div>
+
+  <div class="task-menu" id="taskMenu" role="menu" aria-label="任务操作" hidden></div>
+
+  <div class="toast-host" id="toastHost" aria-live="polite" aria-atomic="true"></div>
+
+  <dialog class="modal edit-dialog" id="editDialog" aria-labelledby="editDialogTitle">
+    <form id="editForm" novalidate>
+      <header class="modal-header">
+        <div>
+          <span class="modal-eyebrow">TASK DETAILS</span>
+          <h2 id="editDialogTitle">编辑任务</h2>
+        </div>
+        <button class="icon-button modal-close" type="button" data-close-dialog="editDialog" aria-label="关闭">
+          <svg><use href="#i-close"></use></svg>
+        </button>
+      </header>
+      <div class="modal-body">
+        <label class="field">
+          <span class="field-label">任务名称</span>
+          <input id="editTitle" class="text-field" type="text" maxlength="160" required>
+        </label>
+        <label class="field">
+          <span class="field-label">备注 <span class="field-optional">可选</span></span>
+          <textarea id="editNote" class="text-field note-field" maxlength="1000" rows="4" placeholder="补充一些背景、下一步，或任何值得记下来的细节。"></textarea>
+        </label>
+        <fieldset class="field status-field">
+          <legend class="field-label">所在区域</legend>
+          <div class="segmented-control">
+            <label><input type="radio" name="editStatus" value="todo"><span><i class="seg-dot todo"></i>待开始</span></label>
+            <label><input type="radio" name="editStatus" value="doing"><span><i class="seg-dot doing"></i>进行中</span></label>
+            <label><input type="radio" name="editStatus" value="done"><span><i class="seg-dot done"></i>已完成</span></label>
+          </div>
+        </fieldset>
+        <p class="field-error" id="editError" role="alert" hidden>请填写任务名称。</p>
+      </div>
+      <footer class="modal-footer">
+        <button class="danger-button" id="editDeleteButton" type="button">
+          <svg><use href="#i-trash"></use></svg>删除
+        </button>
+        <div class="modal-footer-right">
+          <button class="secondary-button" type="button" data-close-dialog="editDialog">取消</button>
+          <button class="primary-button" type="submit">保存修改</button>
+        </div>
+      </footer>
+    </form>
+  </dialog>
+
+  <dialog class="modal help-dialog" id="helpDialog" aria-labelledby="helpDialogTitle">
+    <header class="modal-header">
+      <div>
+        <span class="modal-eyebrow">A LITTLE GUIDE</span>
+        <h2 id="helpDialogTitle">用起来很简单</h2>
+      </div>
+      <button class="icon-button modal-close" type="button" data-close-dialog="helpDialog" aria-label="关闭">
+        <svg><use href="#i-close"></use></svg>
+      </button>
+    </header>
+    <div class="modal-body">
+      <div class="guide-grid">
+        <div class="guide-item">
+          <span class="guide-icon doing"><svg><use href="#i-arrow-right"></use></svg></span>
+          <div><h3>拖动卡片</h3><p>把任务拖到另一栏，状态会自动更新；在同一栏上下拖动可以排序。</p></div>
+        </div>
+        <div class="guide-item">
+          <span class="guide-icon todo"><svg><use href="#i-edit"></use></svg></span>
+          <div><h3>双击编辑</h3><p>双击任意卡片，补充备注或直接调整所在区域。</p></div>
+        </div>
+        <div class="guide-item">
+          <span class="guide-icon done"><svg><use href="#i-archive"></use></svg></span>
+          <div><h3>按天归档</h3><p>已完成任务自动按完成日期分组。今天默认展开，往日折叠成日期，看板不会被历史任务淹没。</p></div>
+        </div>
+        <div class="guide-item">
+          <span class="guide-icon neutral"><svg><use href="#i-keyboard"></use></svg></span>
+          <div><h3>键盘也能用</h3><p><kbd>Ctrl</kbd>+<kbd>N</kbd> 添加 · <kbd>Ctrl</kbd>+<kbd>F</kbd> 搜索 · <kbd>Alt</kbd>+<kbd>←</kbd>/<kbd>→</kbd> 在卡片间移动 · <kbd>?</kbd> 打开说明</p></div>
+        </div>
+      </div>
+      <div class="data-note">
+        <span class="data-note-icon"><svg><use href="#i-folder"></use></svg></span>
+        <div>
+          <strong>数据只保存在这台电脑</strong>
+          <p>每次修改都会自动保存，不需要账号，也不会上传网络。</p>
+        </div>
+        <button class="quiet-button" id="openDataFolderButton" type="button">打开数据位置</button>
+      </div>
+    </div>
+    <footer class="modal-footer help-footer">
+      <span>任务看板 TaskFlow · <span id="appVersion">v1.0.0</span></span>
+      <span class="help-footer-note">一次只做一件事。</span>
+    </footer>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>

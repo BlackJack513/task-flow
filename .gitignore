@@ -1,0 +1,14 @@
+node_modules/
+release/
+release-app/
+release-build/
+.artifacts/
+.electron-cache/
+.electron-builder-cache/
+.npm-cache/
+.localappdata/
+.appdata/
+.test-data/
+*.log
+.DS_Store
+Thumbs.db
